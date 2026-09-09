@@ -578,19 +578,28 @@
 .contact-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-8);
+  grid-template-areas:
+    "name    info-email"
+    "email   info-hours"
+    "message info-studio"
+    "button  .";
+  column-gap: var(--space-8);
+  row-gap: var(--space-4);
+  align-items: start;
 }
 
 @media (max-width: 800px) {
   .contact-layout {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "name"
+      "email"
+      "message"
+      "button"
+      "info-email"
+      "info-hours"
+      "info-studio";
   }
-}
-
-.contact-info-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-5);
 }
 
 .contact-info-row {
