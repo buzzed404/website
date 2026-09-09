@@ -34,6 +34,7 @@ export default function WishlistDrawer({ open, onClose }) {
       color: product.colors[0],
       sku: product.sku,
       category: product.category,
+      image: product.image,
       qty: 1,
     });
     removeFromWishlist(product.id);
@@ -69,7 +70,7 @@ export default function WishlistDrawer({ open, onClose }) {
                 products.map((product) => (
                   <div key={product.id} className="cart-row">
                     <Link to={`/product/${product.id}`} className="cart-row__media" onClick={onClose}>
-                      <ProductVisual category={product.category} sku={product.sku} size="sm" />
+                      <ProductVisual category={product.category} sku={product.sku} size="sm" image={product.image} />
                     </Link>
                     <div className="cart-row__body">
                       <Link to={`/product/${product.id}`} className="cart-row__name" onClick={onClose}>

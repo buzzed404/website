@@ -11,7 +11,7 @@ export default function CartItemRow({ item }) {
   return (
     <div className="cart-row">
       <div className="cart-row__media">
-        <ProductVisual category={item.category} sku={item.sku} size="sm" />
+        <ProductVisual category={item.category} sku={item.sku} size="sm" image={item.image} />
       </div>
       <div className="cart-row__body">
         <span className="cart-row__name">{item.name}</span>

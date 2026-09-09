@@ -77,6 +77,7 @@ export default function ProductDetail() {
       color,
       sku: product.sku,
       category: product.category,
+      image: product.image,
       qty,
     });
     showToast("Added to cart");
@@ -89,7 +90,7 @@ export default function ProductDetail() {
       </nav>
 
       <div className="product-detail">
-        <ImageGallery category={product.category} sku={product.sku} />
+        <ImageGallery category={product.category} sku={product.sku} image={product.image} />
 
         <div className="product-detail__info">
           <div>

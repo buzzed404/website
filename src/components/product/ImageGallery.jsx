@@ -5,7 +5,7 @@ import "./product.css";
 
 const VIEWS = ["Front", "Back", "Detail", "Fabric"];
 
-export default function ImageGallery({ category, sku }) {
+export default function ImageGallery({ category, sku, image }) {
   const [active, setActive] = useState(0);
 
   return (
@@ -19,7 +19,7 @@ export default function ImageGallery({ category, sku }) {
             onClick={() => setActive(i)}
             aria-label={`View ${view}`}
           >
-            <ProductVisual category={category} sku={view} size="sm" />
+            <ProductVisual category={category} sku={view} size="sm" image={image} />
           </button>
         ))}
       </div>
@@ -32,7 +32,7 @@ export default function ImageGallery({ category, sku }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
           >
-            <ProductVisual category={category} sku={`${sku} // ${VIEWS[active].toUpperCase()}`} />
+            <ProductVisual category={category} sku={`${sku} // ${VIEWS[active].toUpperCase()}`} image={image} />
           </motion.div>
         </AnimatePresence>
       </div>

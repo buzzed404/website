@@ -28,8 +28,16 @@ export default function Header() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    window.addEventListener("scroll", onScroll);
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 12);
+        ticking = false;
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -144,7 +152,7 @@ export default function Header() {
                   >
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                       <div style={{ width: 48 }}>
-                        <ProductVisual category={product.category} sku={product.sku} size="sm" />
+                        <ProductVisual category={product.category} sku={product.sku} size="sm" image={product.image} />
                       </div>
                       <span>{product.name}</span>
                     </div>

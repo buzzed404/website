@@ -32,6 +32,7 @@ export default function ProductCard({ product }) {
       color: product.colors[0],
       sku: product.sku,
       category: product.category,
+      image: product.image,
       qty: 1,
     });
     showToast("Added to cart");
@@ -60,7 +61,7 @@ export default function ProductCard({ product }) {
             <path d="M12 20s-7-4.35-9.5-8.5C.7 8.2 2.2 4.5 6 4.5c2 0 3.5 1.2 6 3.5 2.5-2.3 4-3.5 6-3.5 3.8 0 5.3 3.7 3.5 7C19 15.65 12 20 12 20z" />
           </svg>
         </button>
-        <ProductVisual category={product.category} sku={product.sku} />
+        <ProductVisual category={product.category} sku={product.sku} image={product.image} />
         <div className="product-card__quickadd">
           <Button variant="primary" size="sm" full onClick={handleQuickAdd}>
             Quick Add

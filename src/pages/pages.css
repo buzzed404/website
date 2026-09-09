@@ -121,14 +121,23 @@
 
 .category-tile__icon {
   position: absolute;
-  right: -10px;
-  bottom: -10px;
-  width: 60%;
-  height: 60%;
-  opacity: 0.12;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 34%;
+  height: 34%;
+  opacity: 0.24;
   stroke: var(--color-accent);
   fill: none;
-  stroke-width: 1.4;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity var(--duration-base) var(--ease-standard), transform var(--duration-base) var(--ease-standard);
+}
+
+.category-tile:hover .category-tile__icon {
+  opacity: 0.4;
+  transform: translate(-50%, -50%) scale(1.06);
 }
 
 /* Brand story */
@@ -686,6 +695,17 @@
   width: 100%;
   border-collapse: collapse;
   min-width: 640px;
+}
+
+.admin-table--fixed {
+  table-layout: fixed;
+}
+
+.cell-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .admin-table th,

@@ -18,7 +18,7 @@
   background: rgba(5, 11, 9, 0.85);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
-  transition: padding var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard);
+  transition: box-shadow var(--duration-base) var(--ease-standard);
 }
 
 .site-header[data-scrolled="true"] {
@@ -31,11 +31,14 @@
   justify-content: space-between;
   gap: var(--space-5);
   padding-block: 18px;
-  transition: padding var(--duration-base) var(--ease-standard);
+  transform: scale(1);
+  transform-origin: top center;
+  transition: transform var(--duration-base) var(--ease-standard);
+  will-change: transform;
 }
 
 .site-header[data-scrolled="true"] .site-header__inner {
-  padding-block: 12px;
+  transform: scale(0.92);
 }
 
 .site-header__logo {

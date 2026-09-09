@@ -37,30 +37,30 @@ export default function AdminProducts() {
       </div>
 
       <div className="admin-table-wrap">
-        <table className="admin-table">
+        <table className="admin-table admin-table--fixed">
           <thead>
             <tr>
-              <th>Product</th>
-              <th>SKU</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Actions</th>
+              <th style={{ width: "34%" }}>Product</th>
+              <th style={{ width: "16%" }}>SKU</th>
+              <th style={{ width: "14%" }}>Category</th>
+              <th style={{ width: "12%" }}>Price</th>
+              <th style={{ width: "9%" }}>Stock</th>
+              <th style={{ width: "15%" }}>Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
               <tr key={p.id}>
                 <td>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                    <div style={{ width: 44 }}>
-                      <ProductVisual category={p.category} sku={p.sku} size="sm" />
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>
+                    <div style={{ width: 44, flexShrink: 0 }}>
+                      <ProductVisual category={p.category} sku={p.sku} size="sm" image={p.image} />
                     </div>
-                    {p.name}
+                    <span className="cell-truncate">{p.name}</span>
                   </div>
                 </td>
-                <td style={{ fontFamily: "var(--font-mono)" }}>{p.sku}</td>
-                <td>{p.category}</td>
+                <td className="cell-truncate" style={{ fontFamily: "var(--font-mono)" }}>{p.sku}</td>
+                <td className="cell-truncate">{p.category}</td>
                 <td>{formatCurrency(p.price)}</td>
                 <td>{p.stock}</td>
                 <td>

@@ -22,7 +22,10 @@ const EMPTY_FORM = {
   details: "",
   isNew: false,
   isFeatured: false,
+  image: "",
 };
+
+const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
 
 export default function AdminProductForm() {
   const { id } = useParams();
@@ -55,6 +58,19 @@ export default function AdminProductForm() {
     }));
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > MAX_IMAGE_BYTES) {
+      showToast("Image too large — please use one under 1.5MB.", { type: "error" });
+      e.target.value = "";
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => setForm((prev) => ({ ...prev, image: reader.result }));
+    reader.readAsDataURL(file);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const payload = {
@@ -70,6 +86,7 @@ export default function AdminProductForm() {
       details: form.details.split("\n").map((d) => d.trim()).filter(Boolean),
       isNew: form.isNew,
       isFeatured: form.isFeatured,
+      image: form.image || null,
     };
 
     if (isEdit) {
@@ -113,6 +130,51 @@ export default function AdminProductForm() {
         </div>
 
         <Field label="Stock" id="stock" type="number" value={form.stock} required onChange={(e) => setForm({ ...form, stock: e.target.value })} />
+
+        <div className="option-group">
+          <div className="option-group__label">
+            <span>Product Image</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            {form.image ? (
+              <img
+                src={form.image}
+                alt="Product preview"
+                style={{ width: 84, height: 84, objectFit: "cover", borderRadius: "var(--radius-md)", border: "1px solid var(--color-border)" }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: 84,
+                  height: 84,
+                  borderRadius: "var(--radius-md)",
+                  border: "1px dashed var(--color-border-strong)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "var(--color-text-faint)",
+                  fontSize: "var(--fs-xs)",
+                  fontFamily: "var(--font-mono)",
+                  textAlign: "center",
+                  padding: "4px",
+                }}
+              >
+                No Image
+              </div>
+            )}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <input type="file" accept="image/*" id="image" onChange={handleImageChange} />
+              {form.image && (
+                <Button type="button" variant="ghost" size="sm" onClick={() => setForm({ ...form, image: "" })}>
+                  Remove Image
+                </Button>
+              )}
+              <span style={{ color: "var(--color-text-faint)", fontSize: "var(--fs-xs)" }}>
+                JPG or PNG, under 1.5MB. Without one, a placeholder icon is shown.
+              </span>
+            </div>
+          </div>
+        </div>
 
         <div className="option-group">
           <div className="option-group__label">
