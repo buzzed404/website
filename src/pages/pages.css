@@ -711,6 +711,12 @@
   }
 }
 
+@media (max-width: 480px) {
+  .admin-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .stat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
