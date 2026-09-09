@@ -5,7 +5,6 @@ import storyImg from "../../assets/images/brand-product-tease.jpg";
 import Button from "../../components/ui/Button";
 import ProductGrid from "../../components/product/ProductGrid";
 import ProductGridSkeleton from "../../components/product/ProductGridSkeleton";
-import NewsletterSignup from "../../components/layout/NewsletterSignup";
 import StarRating from "../../components/ui/StarRating";
 import { CATEGORIES } from "../../utils/constants";
 import { useEffect, useState } from "react";
@@ -180,9 +179,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="container page-section">
-        <NewsletterSignup />
-      </section>
     </div>
   );
 }
