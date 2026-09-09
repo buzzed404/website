@@ -6,6 +6,7 @@ import Button from "../../components/ui/Button";
 import ProductGrid from "../../components/product/ProductGrid";
 import ProductGridSkeleton from "../../components/product/ProductGridSkeleton";
 import StarRating from "../../components/ui/StarRating";
+import ScrollGlowFrame from "../../components/ui/ScrollGlowFrame";
 import { CATEGORIES } from "../../utils/constants";
 import { useEffect, useState } from "react";
 import * as productService from "../../services/productService";
@@ -125,14 +126,16 @@ export default function Home() {
 
       <section className="container page-section" id="brand-story">
         <div className="brand-story">
-          <motion.img
-            src={storyImg}
-            alt="BUZZED.404 apparel detail"
+          <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-          />
+          >
+            <ScrollGlowFrame>
+              <img src={storyImg} alt="BUZZED.404 apparel detail" />
+            </ScrollGlowFrame>
+          </motion.div>
           <motion.div
             className="brand-story__body"
             initial={{ opacity: 0, y: 20 }}
