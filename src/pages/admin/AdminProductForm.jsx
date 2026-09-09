@@ -25,7 +25,7 @@ const EMPTY_FORM = {
   image: "",
 };
 
-const MAX_IMAGE_BYTES = 1.5 * 1024 * 1024;
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
 
 export default function AdminProductForm() {
   const { id } = useParams();
@@ -34,6 +34,7 @@ export default function AdminProductForm() {
   const { showToast } = useToast();
   const [form, setForm] = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(isEdit);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -58,17 +59,24 @@ export default function AdminProductForm() {
     }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_IMAGE_BYTES) {
-      showToast("Image too large — please use one under 1.5MB.", { type: "error" });
+      showToast("Image too large — please use one under 5MB.", { type: "error" });
       e.target.value = "";
       return;
     }
-    const reader = new FileReader();
-    reader.onload = () => setForm((prev) => ({ ...prev, image: reader.result }));
-    reader.readAsDataURL(file);
+    setUploading(true);
+    try {
+      const url = await productService.uploadProductImage(file);
+      setForm((prev) => ({ ...prev, image: url }));
+    } catch (err) {
+      showToast(err.message || "Image upload failed.", { type: "error" });
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -163,14 +171,15 @@ export default function AdminProductForm() {
               </div>
             )}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <input type="file" accept="image/*" id="image" onChange={handleImageChange} />
-              {form.image && (
+              <input type="file" accept="image/*" id="image" onChange={handleImageChange} disabled={uploading} />
+              {uploading && <span style={{ color: "var(--color-accent)", fontSize: "var(--fs-xs)" }}>Uploading...</span>}
+              {form.image && !uploading && (
                 <Button type="button" variant="ghost" size="sm" onClick={() => setForm({ ...form, image: "" })}>
                   Remove Image
                 </Button>
               )}
               <span style={{ color: "var(--color-text-faint)", fontSize: "var(--fs-xs)" }}>
-                JPG or PNG, under 1.5MB. Without one, a placeholder icon is shown.
+                JPG or PNG, under 5MB. Without one, a placeholder icon is shown.
               </span>
             </div>
           </div>
@@ -222,7 +231,7 @@ export default function AdminProductForm() {
           <Button variant="secondary" type="button" onClick={() => navigate("/admin/products")}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={uploading}>
             {isEdit ? "Save Changes" : "Create Product"}
           </Button>
         </div>

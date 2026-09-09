@@ -21,8 +21,12 @@ function SignInForm() {
       setError("Enter a valid email and password.");
       return;
     }
-    await loginCustomer({ email: form.email });
-    showToast("Signed in successfully");
+    try {
+      await loginCustomer({ email: form.email, password: form.password });
+      showToast("Signed in successfully");
+    } catch (err) {
+      setError(err.message || "Sign in failed. Check your email and password.");
+    }
   };
 
   return (
@@ -32,7 +36,6 @@ function SignInForm() {
       <Button type="submit" variant="primary" full>
         Sign In
       </Button>
-      <p className="demo-note">Static demo: any email/password combination signs you in.</p>
     </form>
   );
 }
@@ -45,12 +48,16 @@ function RegisterForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isRequired(form.name) || !isValidEmail(form.email) || !isRequired(form.password)) {
-      setError("Please fill in all fields with a valid email.");
+    if (!isRequired(form.name) || !isValidEmail(form.email) || form.password.length < 6) {
+      setError("Please fill in all fields with a valid email and a password of 6+ characters.");
       return;
     }
-    await registerCustomer({ name: form.name, email: form.email });
-    showToast("Account created — welcome!");
+    try {
+      await registerCustomer({ name: form.name, email: form.email, password: form.password });
+      showToast("Account created — welcome!");
+    } catch (err) {
+      setError(err.message || "Registration failed. Try a different email.");
+    }
   };
 
   return (

@@ -1,29 +1,41 @@
-import seedReviews from "../data/reviews.mock.json";
-import { readStorage, writeStorage } from "./storage";
+import { supabase } from "../lib/supabaseClient";
 
-const KEY = "reviews";
-
-function seedIfEmpty() {
-  const existing = readStorage(KEY, null);
-  if (!existing) {
-    writeStorage(KEY, seedReviews);
-    return seedReviews;
-  }
-  return existing;
+function mapReviewRow(row) {
+  return {
+    id: row.id,
+    productId: row.product_id,
+    author: row.author,
+    rating: row.rating,
+    title: row.title,
+    body: row.body,
+    date: row.created_at ? row.created_at.slice(0, 10) : null,
+  };
 }
 
 export async function getReviewsByProduct(productId) {
-  const reviews = seedIfEmpty();
-  return reviews.filter((r) => r.productId === productId).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const { data, error } = await supabase
+    .from("reviews")
+    .select("*")
+    .eq("product_id", productId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data.map(mapReviewRow);
 }
 
 export async function addReview(review) {
-  const reviews = seedIfEmpty();
-  const newReview = {
-    ...review,
-    id: `r${String(Date.now()).slice(-6)}`,
-    date: new Date().toISOString().slice(0, 10),
-  };
-  writeStorage(KEY, [...reviews, newReview]);
-  return newReview;
+  const id = `r${String(Date.now()).slice(-6)}`;
+  const { data, error } = await supabase
+    .from("reviews")
+    .insert({
+      id,
+      product_id: review.productId,
+      author: review.author,
+      rating: review.rating,
+      title: review.title,
+      body: review.body,
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  return mapReviewRow(data);
 }

@@ -36,11 +36,6 @@ export const SOCIAL_LINKS = [
   { label: "YouTube", href: "https://youtube.com", icon: "youtube" },
 ];
 
-export const ADMIN_DEMO_CREDENTIALS = {
-  email: "admin@buzzed404.com",
-  password: "admin123",
-};
-
 export const ORDER_STATUSES = ["Pending", "Packed", "Shipped", "Delivered"];
 
 export const COLOR_SWATCHES = {

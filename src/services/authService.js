@@ -1,32 +1,62 @@
-import { ADMIN_DEMO_CREDENTIALS } from "../utils/constants";
-import { readStorage, writeStorage, removeStorage } from "./storage";
+import { supabase } from "../lib/supabaseClient";
 
-const KEY = "session";
-
-export async function loginCustomer({ email, name }) {
-  const session = { role: "customer", email, name: name || email.split("@")[0] };
-  writeStorage(KEY, session);
-  return session;
+async function fetchProfile(userId) {
+  const { data, error } = await supabase.from("profiles").select("*").eq("id", userId).maybeSingle();
+  if (error) throw error;
+  return data;
 }
 
-export async function registerCustomer({ email, name }) {
-  return loginCustomer({ email, name });
+function toSession(user, profile) {
+  return {
+    role: profile?.role || "customer",
+    email: user.email,
+    name: profile?.name || user.email.split("@")[0],
+  };
+}
+
+export async function loginCustomer({ email, password }) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+  const profile = await fetchProfile(data.user.id);
+  return toSession(data.user, profile);
+}
+
+export async function registerCustomer({ email, password, name }) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { name } },
+  });
+  if (error) throw error;
+  if (!data.session) {
+    throw new Error("Check your inbox to confirm your email before signing in.");
+  }
+  // The profiles row is created server-side by the handle_new_user() trigger
+  // (see supabase/schema.sql) — no client-side insert needed here.
+  return toSession(data.user, { name, role: "customer" });
 }
 
 export async function loginAdmin({ email, password }) {
-  if (email === ADMIN_DEMO_CREDENTIALS.email && password === ADMIN_DEMO_CREDENTIALS.password) {
-    const session = { role: "admin", email, name: "Admin" };
-    writeStorage(KEY, session);
-    return session;
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error) throw error;
+  const profile = await fetchProfile(data.user.id);
+  if (profile?.role !== "admin") {
+    await supabase.auth.signOut();
+    throw new Error("This account doesn't have admin access.");
   }
-  throw new Error("Invalid admin credentials.");
+  return toSession(data.user, profile);
 }
 
 export async function logout() {
-  removeStorage(KEY);
+  await supabase.auth.signOut();
   return true;
 }
 
-export function getSession() {
-  return readStorage(KEY, null);
+export async function getSession() {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+  if (!session) return null;
+  const profile = await fetchProfile(session.user.id);
+  return toSession(session.user, profile);
 }

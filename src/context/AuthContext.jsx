@@ -1,10 +1,33 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient";
 import * as authService from "../services/authService";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [session, setSession] = useState(() => authService.getSession());
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+
+    authService.getSession().then((s) => {
+      if (active) {
+        setSession(s);
+        setLoading(false);
+      }
+    });
+
+    const { data: subscription } = supabase.auth.onAuthStateChange(async () => {
+      const s = await authService.getSession();
+      if (active) setSession(s);
+    });
+
+    return () => {
+      active = false;
+      subscription.subscription.unsubscribe();
+    };
+  }, []);
 
   const loginCustomer = async (payload) => {
     const s = await authService.loginCustomer(payload);
@@ -31,6 +54,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     session,
+    loading,
     isAuthenticated: Boolean(session),
     isAdmin: session?.role === "admin",
     isCustomer: session?.role === "customer",
