@@ -1,0 +1,48 @@
+[
+  {
+    "id": "BZ40412001",
+    "customerName": "Aarav Kapoor",
+    "email": "aarav.k@example.com",
+    "date": "2026-09-01",
+    "status": "Delivered",
+    "items": [
+      { "productId": "p001", "name": "Corrupted File Hoodie", "qty": 1, "price": 2999, "size": "L", "color": "Black" },
+      { "productId": "p007", "name": "Glitch Snapback Cap", "qty": 1, "price": 899, "size": "One Size", "color": "Black" }
+    ],
+    "total": 3898
+  },
+  {
+    "id": "BZ40412002",
+    "customerName": "Meera Shah",
+    "email": "meera.s@example.com",
+    "date": "2026-09-04",
+    "status": "Shipped",
+    "items": [
+      { "productId": "p009", "name": "Drop 001 Tee", "qty": 2, "price": 1499, "size": "M", "color": "Black" }
+    ],
+    "total": 2998
+  },
+  {
+    "id": "BZ40412003",
+    "customerName": "Rohan Das",
+    "email": "rohan.d@example.com",
+    "date": "2026-09-06",
+    "status": "Packed",
+    "items": [
+      { "productId": "p003", "name": "System Status Sweatshirt", "qty": 1, "price": 2499, "size": "L", "color": "Charcoal" },
+      { "productId": "p008", "name": "Recovery Track Pants", "qty": 1, "price": 2199, "size": "L", "color": "Black" }
+    ],
+    "total": 4698
+  },
+  {
+    "id": "BZ40412004",
+    "customerName": "Ishita Patel",
+    "email": "ishita.p@example.com",
+    "date": "2026-09-08",
+    "status": "Pending",
+    "items": [
+      { "productId": "p012", "name": "Misfit Oversized Hoodie", "qty": 1, "price": 3199, "size": "XL", "color": "Olive" }
+    ],
+    "total": 3199
+  }
+]
