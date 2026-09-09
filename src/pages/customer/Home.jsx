@@ -2,8 +2,6 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import heroImg from "../../assets/images/brand-drop-001.jpg";
 import storyImg from "../../assets/images/brand-product-tease.jpg";
-import introVideo from "../../assets/videos/brand-intro.mp4";
-import introPoster from "../../assets/images/brand-intro-poster.jpg";
 import Button from "../../components/ui/Button";
 import ProductGrid from "../../components/product/ProductGrid";
 import ProductGridSkeleton from "../../components/product/ProductGridSkeleton";
@@ -79,43 +77,6 @@ export default function Home() {
             </Button>
             <Button to="/shop/Hoodies" variant="secondary">
               Explore Hoodies
-            </Button>
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="container page-section">
-        <div className="intro-section">
-          <motion.div
-            className="intro-video-frame"
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <video
-              src={introVideo}
-              poster={introPoster}
-              controls
-              playsInline
-              preload="metadata"
-              aria-label="BUZZED.404 Drop 001 intro video"
-            />
-          </motion.div>
-          <motion.div
-            className="intro-section__body"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="eyebrow">// Intro</span>
-            <h2 className="section-heading">See Drop 001 in Motion</h2>
-            <p style={{ color: "var(--color-text-muted)", lineHeight: 1.7 }}>
-              A quick look behind the glitch — fabric, fit, and the story behind our first drop.
-            </p>
-            <Button to="/shop" variant="secondary">
-              Shop Drop 001
             </Button>
           </motion.div>
         </div>
