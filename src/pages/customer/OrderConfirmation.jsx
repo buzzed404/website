@@ -54,7 +54,7 @@ export default function OrderConfirmation() {
           </div>
         )}
 
-        <div style={{ display: "flex", gap: "12px" }}>
+        <div className="confirmation__actions">
           <Button to="/shop" variant="primary">
             Continue Shopping
           </Button>

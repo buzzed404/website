@@ -143,7 +143,7 @@ export default function AdminProductForm() {
           <div className="option-group__label">
             <span>Product Image</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px", flexWrap: "wrap" }}>
             {form.image ? (
               <img
                 src={form.image}

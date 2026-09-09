@@ -142,14 +142,14 @@
 
 .cart-page-layout {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: minmax(0, 1fr) 360px;
   gap: var(--space-7);
   align-items: flex-start;
 }
 
 @media (max-width: 900px) {
   .cart-page-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

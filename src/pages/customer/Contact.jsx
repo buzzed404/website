@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import Field from "../../components/ui/Field";
 import Button from "../../components/ui/Button";
 import { ChevronDownIcon } from "../../components/ui/Icons";
@@ -16,6 +16,7 @@ const FAQS = [
 
 function FaqItem({ faq }) {
   const [open, setOpen] = useState(false);
+
   return (
     <div className="faq-item">
       <button className="faq-item__question" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
@@ -24,15 +25,19 @@ function FaqItem({ faq }) {
           <ChevronDownIcon width={18} height={18} />
         </motion.span>
       </button>
-      <motion.div
-        className="faq-item__answer"
-        initial={false}
-        animate={{ height: open ? "auto" : 0, marginBottom: open ? 16 : 0 }}
-        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
-        style={{ overflow: "hidden" }}
-      >
-        <p>{faq.a}</p>
-      </motion.div>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            className="faq-item__answer"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: [0.4, 0, 0.2, 1] }}
+          >
+            <p>{faq.a}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
